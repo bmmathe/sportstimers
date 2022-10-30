@@ -1,57 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { Sheet, Typography } from "@mui/joy";
+import React from "react";
+import { useSelector } from "react-redux";
+import GameTimer from "./features/timers/GameTimer";
+import SetGameTimer from "./features/timers/SetGameTimer";
+import ModeToggle from "./ModeToggle";
 
 function App() {
+  const gameTimeState = useSelector((state) => state.timers.status);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <main>
+      <Sheet
+        sx={{
+          width: 300,
+          mx: "auto", // margin left & right
+          my: 4, // margin top & botom
+          py: 3, // padding top & bottom
+          px: 2, // padding left & right
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          borderRadius: "sm",
+          boxShadow: "md",
+        }}
+        variant="outlined"
+      >
+        <ModeToggle />
+        <div>
+          <Typography level="h4" component="h1">
+            <b>Sports Timers</b>
+          </Typography>
+          <Typography level="body2">Sports timing simplified.</Typography>
+        </div>
+        {gameTimeState === "notset" && <SetGameTimer />}
+        {(gameTimeState === "running" || gameTimeState === "paused") && (
+          <GameTimer />
+        )}
+      </Sheet>
+    </main>
   );
 }
 

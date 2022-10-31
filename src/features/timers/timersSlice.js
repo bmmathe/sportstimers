@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { notificationService } from "../../NotificationService";
 import { timerManager } from "./TimerManager";
 
 const initialState = {
@@ -16,6 +17,7 @@ export const timersSlice = createSlice({
         timerManager.stopTimer("gameTimer");
         state.time = 0;
         state.status = "finished";
+        notificationService.sendNotification("Time ended", "Game timer ended.");
       } else {
         state.time = time;
       }

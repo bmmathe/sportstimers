@@ -6,6 +6,20 @@ function GameTimer() {
   const dispatch = useDispatch();
   const gameTime = useSelector((state) => state.timers.time);
   const gameTimeStatus = useSelector((state) => state.timers.status);
+
+  const startGameTimer = () => {
+    if (gameTimeStatus === "notset") {
+      dispatch(startTime());
+      Notification.requestPermission().then(() => {
+        // do nothing, just get permission
+      });
+    } else if (gameTimeStatus === "running") {
+      dispatch(pauseTime());
+    } else {
+      dispatch(startTime());
+    }
+  };
+
   return (
     <Stack direction="column" alignItems="center" spacing={1}>
       <Typography level="h3">Game Timer</Typography>
@@ -18,13 +32,7 @@ function GameTimer() {
           {new Date(gameTime * 1000).toISOString().substring(11, 16)}
         </Typography>
       )}
-      <Button
-        onClick={function () {
-          gameTimeStatus === "running"
-            ? dispatch(pauseTime())
-            : dispatch(startTime());
-        }}
-      >
+      <Button onClick={startGameTimer}>
         {gameTimeStatus === "running" ? "Pause" : "Start"}
       </Button>
     </Stack>
